@@ -1,0 +1,110 @@
+basePath: /v1
+definitions:
+  v1.emptyJSONResponse:
+    type: object
+  v1.goodPostRequest:
+    properties:
+      category:
+        example: Food
+        type: string
+      name:
+        example: Ice cream
+        type: string
+    required:
+    - category
+    - name
+    type: object
+  v1.goodPostResponse:
+    properties:
+      id:
+        type: string
+    type: object
+  v1.goodPutRequest:
+    properties:
+      category:
+        example: Transport
+        type: string
+      name:
+        example: Bicycle
+        type: string
+    required:
+    - category
+    - name
+    type: object
+  v1.response:
+    properties:
+      error:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: vladkolesnikofff@gmail.com
+    name: Developer
+  description: Service for interactions with user's money accounts
+  license:
+    name: MIT
+    url: https://github.com/kolesnikoff17/avito_tech_internship/blob/main/LICENSE
+  title: Good
+  version: "1.0"
+paths:
+  /order:
+    post:
+      consumes:
+      - application/json
+      description: creates new good in repo
+      parameters:
+      - description: name and category
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.goodPostRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/v1.goodPostResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+      summary: createGood
+      tags:
+      - good
+  /order/{id}:
+    put:
+      consumes:
+      - application/json
+      description: deletes good
+      parameters:
+      - description: good id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.emptyJSONResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+      summary: deleteGood
+      tags:
+      - good
+swagger: "2.0"

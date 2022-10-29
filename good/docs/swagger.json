@@ -1,0 +1,165 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Service for interactions with user's money accounts",
+        "title": "Good",
+        "contact": {
+            "name": "Developer",
+            "email": "vladkolesnikofff@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://github.com/kolesnikoff17/avito_tech_internship/blob/main/LICENSE"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/v1",
+    "paths": {
+        "/order": {
+            "post": {
+                "description": "creates new good in repo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "good"
+                ],
+                "summary": "createGood",
+                "parameters": [
+                    {
+                        "description": "name and category",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.goodPostRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/v1.goodPostResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/{id}": {
+            "put": {
+                "description": "deletes good",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "good"
+                ],
+                "summary": "deleteGood",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "good id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.emptyJSONResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "v1.emptyJSONResponse": {
+            "type": "object"
+        },
+        "v1.goodPostRequest": {
+            "type": "object",
+            "required": [
+                "category",
+                "name"
+            ],
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "example": "Food"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Ice cream"
+                }
+            }
+        },
+        "v1.goodPostResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.goodPutRequest": {
+            "type": "object",
+            "required": [
+                "category",
+                "name"
+            ],
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "example": "Transport"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Bicycle"
+                }
+            }
+        },
+        "v1.response": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
