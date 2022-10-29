@@ -21,7 +21,7 @@ import (
 // @contact.name   Developer
 // @contact.email  vladkolesnikofff@gmail.com
 // @license.name  MIT
-// @license.url   https://github.com/kolesnikoff17/avito_tech_internship/blob/main/LICENSE
+// @license.url   https://github.com/kolesnikoff17/orders-goods/blob/main/LICENSE
 // @host      localhost:8080
 // @BasePath  /v1
 func main() {
