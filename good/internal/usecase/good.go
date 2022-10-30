@@ -22,6 +22,18 @@ func New(r GoodRepo, p kafka.Notifier) *Good {
 	}
 }
 
+// GetGood return good by its id
+func (uc *Good) GetGood(ctx context.Context, id string) (entity.Good, error) {
+	g, err := uc.r.GetByID(ctx, id)
+	switch {
+	case errors.Is(err, entity.ErrNoID):
+		return entity.Good{}, err
+	case err != nil:
+		return entity.Good{}, fmt.Errorf("usecase - getgood: %w", err)
+	}
+	return g, nil
+}
+
 // NewGood creates new good in db
 func (uc *Good) NewGood(ctx context.Context, good entity.Good) (string, error) {
 	id, err := uc.r.Create(ctx, good)

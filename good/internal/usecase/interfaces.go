@@ -7,6 +7,7 @@ import (
 
 // GoodUseCase is an interface for model layer
 type GoodUseCase interface {
+	GetGood(ctx context.Context, id string) (entity.Good, error)
 	NewGood(ctx context.Context, good entity.Good) (string, error)
 	UpdateGood(ctx context.Context, good entity.Good) error
 	DeleteGood(ctx context.Context, id string) error
