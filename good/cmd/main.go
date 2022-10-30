@@ -1,18 +1,20 @@
 package main
 
 import (
-  "github.com/gin-gonic/gin"
-  "good/config"
-  v1 "good/internal/controller/http/v1"
-  "good/internal/usecase"
-  "good/internal/usecase/repository"
-  "good/pkg/httpserver"
-  "good/pkg/logger"
-  mongodb "good/pkg/mongo"
-  "log"
-  "os"
-  "os/signal"
-  "syscall"
+	"github.com/gin-gonic/gin"
+	"good/config"
+	v1 "good/internal/controller/http/v1"
+	"good/internal/usecase"
+	"good/internal/usecase/kafka"
+	"good/internal/usecase/repository"
+	"good/pkg/httpserver"
+	"good/pkg/kafkaproducer"
+	"good/pkg/logger"
+	mongodb "good/pkg/mongo"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 // @title           Good
@@ -25,37 +27,44 @@ import (
 // @host      localhost:8080
 // @BasePath  /v1
 func main() {
-  cfg := config.NewConfig()
-  uri := config.DbParams(cfg)
+	cfg := config.NewConfig()
+	uri := config.DbParams(cfg)
 
-  l, err := logger.New(cfg.Logger.Level)
-  if err != nil {
-    log.Fatalf("failed to build logger: %s", err)
-  }
+	l, err := logger.New(cfg.Logger.Level)
+	if err != nil {
+		log.Fatalf("failed to build logger: %s", err)
+	}
 
-  db, err := mongodb.New(uri)
-  if err != nil {
-    l.Fatalf("failed to connect to db: %s", err)
-  }
+	db, err := mongodb.New(uri)
+	if err != nil {
+		l.Fatalf("failed to connect to db: %s", err)
+	}
+	defer db.Close()
 
-  useCase := usecase.New(repository.New(db))
+	p, err := kafkaproducer.New(cfg.Kafka.Host, cfg.Kafka.Port)
+	if err != nil {
+		l.Fatalf("failed to connect to kafka broker: %s", err)
+	}
+	defer p.Close()
 
-  handler := gin.New()
-  v1.NewRouter(handler, useCase, l)
-  server := httpserver.New(handler)
+	useCase := usecase.New(repository.New(db), kafka.New(p))
 
-  interrupt := make(chan os.Signal, 1)
-  signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
+	handler := gin.New()
+	v1.NewRouter(handler, useCase, l)
+	server := httpserver.New(handler)
 
-  select {
-  case sig := <-interrupt:
-    l.Infof("shutting down with signal: %s", sig)
-  case err = <-server.Notify():
-    l.Infof("server err: %s", err)
-  }
+	interrupt := make(chan os.Signal, 1)
+	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
 
-  err = server.Shutdown()
-  if err != nil {
-    l.Infof("server shutdown err: %s", err)
-  }
+	select {
+	case sig := <-interrupt:
+		l.Infof("shutting down with signal: %s", sig)
+	case err = <-server.Notify():
+		l.Infof("server err: %s", err)
+	}
+
+	err = server.Shutdown()
+	if err != nil {
+		l.Infof("server shutdown err: %s", err)
+	}
 }
