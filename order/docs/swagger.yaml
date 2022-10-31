@@ -1,0 +1,145 @@
+basePath: /v1
+definitions:
+  mw.GoodsList:
+    properties:
+      amount:
+        minimum: 1
+        type: integer
+      good_id:
+        type: string
+    required:
+    - amount
+    - good_id
+    type: object
+  mw.OrderRequestBody:
+    properties:
+      goods:
+        items:
+          $ref: '#/definitions/mw.GoodsList'
+        type: array
+      user_id:
+        example: 1
+        minimum: 1
+        type: integer
+    required:
+    - goods
+    - user_id
+    type: object
+  v1.emptyJSONResponse:
+    type: object
+  v1.orderPostResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  v1.response:
+    properties:
+      error:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: vladkolesnikofff@gmail.com
+    name: Developer
+  description: CUD API for orders db
+  license:
+    name: MIT
+    url: https://github.com/kolesnikoff17/orders-goods/blob/main/LICENSE
+  title: Order
+  version: "1.0"
+paths:
+  /order:
+    post:
+      consumes:
+      - application/json
+      description: create new order in repo
+      parameters:
+      - description: order data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/mw.OrderRequestBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/v1.orderPostResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+      summary: createOrder
+      tags:
+      - order
+  /order/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete order from db
+      parameters:
+      - description: order id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.emptyJSONResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+      summary: deleteOrder
+      tags:
+      - order
+    put:
+      consumes:
+      - application/json
+      description: update order data
+      parameters:
+      - description: order id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: order data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/mw.OrderRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.emptyJSONResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+      summary: updateOrder
+      tags:
+      - order
+swagger: "2.0"
