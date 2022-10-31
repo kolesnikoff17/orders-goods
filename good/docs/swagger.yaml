@@ -1,35 +1,42 @@
 basePath: /v1
 definitions:
-  v1.emptyJSONResponse:
-    type: object
-  v1.goodPostRequest:
+  entity.Good:
     properties:
+      additional:
+        additionalProperties: true
+        type: object
+      category:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+    type: object
+  mw.GoodRequestBody:
+    properties:
+      additional:
+        additionalProperties: true
+        type: object
       category:
         example: Food
         type: string
       name:
         example: Ice cream
         type: string
+      price:
+        example: "200"
+        type: string
     required:
     - category
     - name
+    - price
+    type: object
+  v1.emptyJSONResponse:
     type: object
   v1.goodPostResponse:
     properties:
       id:
         type: string
-    type: object
-  v1.goodPutRequest:
-    properties:
-      category:
-        example: Transport
-        type: string
-      name:
-        example: Bicycle
-        type: string
-    required:
-    - category
-    - name
     type: object
   v1.response:
     properties:
@@ -41,14 +48,42 @@ info:
   contact:
     email: vladkolesnikofff@gmail.com
     name: Developer
-  description: Service for interactions with user's money accounts
+  description: CRUD API for goods db
   license:
     name: MIT
-    url: https://github.com/kolesnikoff17/avito_tech_internship/blob/main/LICENSE
+    url: https://github.com/kolesnikoff17/orders-goods/blob/main/LICENSE
   title: Good
   version: "1.0"
 paths:
-  /order:
+  /good:
+    get:
+      consumes:
+      - application/json
+      description: return order with given id
+      parameters:
+      - description: good id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Good'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+      summary: getByID
+      tags:
+      - good
     post:
       consumes:
       - application/json
@@ -59,7 +94,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/v1.goodPostRequest'
+          $ref: '#/definitions/mw.GoodRequestBody'
       produces:
       - application/json
       responses:
@@ -78,8 +113,8 @@ paths:
       summary: createGood
       tags:
       - good
-  /order/{id}:
-    put:
+  /good/{id}:
+    delete:
       consumes:
       - application/json
       description: deletes good
@@ -105,6 +140,40 @@ paths:
           schema:
             $ref: '#/definitions/v1.response'
       summary: deleteGood
+      tags:
+      - good
+    put:
+      consumes:
+      - application/json
+      description: update order with given id
+      parameters:
+      - description: good id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: new good data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/mw.GoodRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.emptyJSONResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+      summary: updateGood
       tags:
       - good
 swagger: "2.0"

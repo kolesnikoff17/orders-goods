@@ -1,16 +1,16 @@
 package main
 
 import (
+	"common.local/pkg/httpserver"
+	"common.local/pkg/kafkaproducer"
+	"common.local/pkg/logger"
+	mongodb "common.local/pkg/mongo"
 	"github.com/gin-gonic/gin"
 	"good/config"
 	v1 "good/internal/controller/http/v1"
 	"good/internal/usecase"
 	"good/internal/usecase/kafka"
 	"good/internal/usecase/repository"
-	"good/pkg/httpserver"
-	"good/pkg/kafkaproducer"
-	"good/pkg/logger"
-	mongodb "good/pkg/mongo"
 	"log"
 	"os"
 	"os/signal"
@@ -19,7 +19,7 @@ import (
 
 // @title           Good
 // @version         1.0
-// @description     Service for interactions with user's money accounts
+// @description     CRUD API for goods db
 // @contact.name   Developer
 // @contact.email  vladkolesnikofff@gmail.com
 // @license.name  MIT

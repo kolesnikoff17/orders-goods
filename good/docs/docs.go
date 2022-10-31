@@ -16,14 +16,56 @@ const docTemplate = `{
         },
         "license": {
             "name": "MIT",
-            "url": "https://github.com/kolesnikoff17/avito_tech_internship/blob/main/LICENSE"
+            "url": "https://github.com/kolesnikoff17/orders-goods/blob/main/LICENSE"
         },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/order": {
+        "/good": {
+            "get": {
+                "description": "return order with given id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "good"
+                ],
+                "summary": "getByID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "good id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Good"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "creates new good in repo",
                 "consumes": [
@@ -43,7 +85,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.goodPostRequest"
+                            "$ref": "#/definitions/mw.GoodRequestBody"
                         }
                     }
                 ],
@@ -69,8 +111,59 @@ const docTemplate = `{
                 }
             }
         },
-        "/order/{id}": {
+        "/good/{id}": {
             "put": {
+                "description": "update order with given id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "good"
+                ],
+                "summary": "updateGood",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "good id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "new good data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mw.GoodRequestBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.emptyJSONResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    }
+                }
+            },
+            "delete": {
                 "description": "deletes good",
                 "consumes": [
                     "application/json"
@@ -115,16 +208,36 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "v1.emptyJSONResponse": {
-            "type": "object"
+        "entity.Good": {
+            "type": "object",
+            "properties": {
+                "additional": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "category": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                }
+            }
         },
-        "v1.goodPostRequest": {
+        "mw.GoodRequestBody": {
             "type": "object",
             "required": [
                 "category",
-                "name"
+                "name",
+                "price"
             ],
             "properties": {
+                "additional": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
                 "category": {
                     "type": "string",
                     "example": "Food"
@@ -132,31 +245,21 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "Ice cream"
+                },
+                "price": {
+                    "type": "string",
+                    "example": "200"
                 }
             }
+        },
+        "v1.emptyJSONResponse": {
+            "type": "object"
         },
         "v1.goodPostResponse": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "string"
-                }
-            }
-        },
-        "v1.goodPutRequest": {
-            "type": "object",
-            "required": [
-                "category",
-                "name"
-            ],
-            "properties": {
-                "category": {
-                    "type": "string",
-                    "example": "Transport"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "Bicycle"
                 }
             }
         },
@@ -178,7 +281,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/v1",
 	Schemes:          []string{},
 	Title:            "Good",
-	Description:      "Service for interactions with user's money accounts",
+	Description:      "CRUD API for goods db",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

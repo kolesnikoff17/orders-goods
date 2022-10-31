@@ -2,7 +2,10 @@ module good
 
 go 1.18
 
+replace common.local/pkg => ../pkg
+
 require (
+	common.local/pkg v0.0.0-00010101000000-000000000000
 	github.com/Shopify/sarama v1.37.2
 	github.com/gin-gonic/gin v1.8.1
 	github.com/shopspring/decimal v1.3.1
@@ -10,7 +13,6 @@ require (
 	github.com/swaggo/gin-swagger v1.5.3
 	github.com/swaggo/swag v1.8.1
 	go.mongodb.org/mongo-driver v1.10.3
-	go.uber.org/zap v1.23.0
 )
 
 require (
@@ -59,6 +61,7 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
+	go.uber.org/zap v1.23.0 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/net v0.0.0-20220927171203-f486391704dc // indirect
 	golang.org/x/sync v0.0.0-20220923202941-7f9b1623fab7 // indirect

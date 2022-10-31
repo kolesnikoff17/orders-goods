@@ -1,9 +1,9 @@
 package v1
 
 import (
+  "common.local/pkg/logger"
   "github.com/gin-gonic/gin"
   "good/internal/usecase"
-  "good/pkg/logger"
 
   swaggerFiles "github.com/swaggo/files"
   ginSwagger "github.com/swaggo/gin-swagger"
