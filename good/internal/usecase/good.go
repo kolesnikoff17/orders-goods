@@ -40,7 +40,7 @@ func (uc *Good) NewGood(ctx context.Context, good entity.Good) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("usecase - newgood: %w", err)
 	}
-	err = uc.p.Notify(kafka.Message{Action: kafka.Create, Data: good})
+	err = uc.p.Notify(kafka.Message{Action: kafka.Create, Data: kafka.Good{ID: id, Data: good}})
 	if err != nil {
 		return "", fmt.Errorf("usecase - newgood: %w", err)
 	}
@@ -60,7 +60,7 @@ func (uc *Good) UpdateGood(ctx context.Context, good entity.Good) error {
 	if err != nil {
 		return fmt.Errorf("usecase - updategood: %w", err)
 	}
-	err = uc.p.Notify(kafka.Message{Action: kafka.Update, Data: good})
+	err = uc.p.Notify(kafka.Message{Action: kafka.Update, Data: kafka.Good{ID: good.ID, Data: good}})
 	if err != nil {
 		return fmt.Errorf("usecase - updategood: %w", err)
 	}
@@ -80,7 +80,7 @@ func (uc *Good) DeleteGood(ctx context.Context, id string) error {
 	if err != nil {
 		return fmt.Errorf("usecase - deletegood: %w", err)
 	}
-	err = uc.p.Notify(kafka.Message{Action: kafka.Delete, Data: entity.Good{ID: id}})
+	err = uc.p.Notify(kafka.Message{Action: kafka.Delete, Data: kafka.Good{ID: id}})
 	if err != nil {
 		return fmt.Errorf("usecase - deletegood: %w", err)
 	}
