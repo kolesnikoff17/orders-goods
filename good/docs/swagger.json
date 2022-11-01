@@ -17,48 +17,6 @@
     "basePath": "/v1",
     "paths": {
         "/good": {
-            "get": {
-                "description": "return order with given id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "good"
-                ],
-                "summary": "getByID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "good id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Good"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/v1.response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/v1.response"
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "creates new good in repo",
                 "consumes": [
@@ -105,8 +63,50 @@
             }
         },
         "/good/{id}": {
+            "get": {
+                "description": "return good with given id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "good"
+                ],
+                "summary": "getByID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "good id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Good"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    }
+                }
+            },
             "put": {
-                "description": "update order with given id",
+                "description": "update good with given id",
                 "consumes": [
                     "application/json"
                 ],

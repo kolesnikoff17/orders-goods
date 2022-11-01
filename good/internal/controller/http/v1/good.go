@@ -31,7 +31,7 @@ func newBalanceRoutes(handler *gin.RouterGroup, uc usecase.GoodUseCase, l logger
 }
 
 // @Summary     getByID
-// @Description return order with given id
+// @Description return good with given id
 // @Tags  	    good
 // @Accept      json
 // @Produce     json
@@ -39,7 +39,7 @@ func newBalanceRoutes(handler *gin.RouterGroup, uc usecase.GoodUseCase, l logger
 // @Success     200 {object} entity.Good
 // @Failure     400 {object} response
 // @Failure     500 {object} response
-// @Router      /good [get]
+// @Router      /good/{id} [get]
 func (r *goodRouter) getByID(c *gin.Context) {
 	id := c.Param("id")
 	g, err := r.uc.GetGood(c.Request.Context(), id)
@@ -87,7 +87,7 @@ func (r *goodRouter) createGood(c *gin.Context) {
 }
 
 // @Summary     updateGood
-// @Description update order with given id
+// @Description update good with given id
 // @Tags  	    good
 // @Accept      json
 // @Produce     json

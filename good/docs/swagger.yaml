@@ -56,34 +56,6 @@ info:
   version: "1.0"
 paths:
   /good:
-    get:
-      consumes:
-      - application/json
-      description: return order with given id
-      parameters:
-      - description: good id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.Good'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/v1.response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/v1.response'
-      summary: getByID
-      tags:
-      - good
     post:
       consumes:
       - application/json
@@ -142,10 +114,38 @@ paths:
       summary: deleteGood
       tags:
       - good
+    get:
+      consumes:
+      - application/json
+      description: return good with given id
+      parameters:
+      - description: good id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Good'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+      summary: getByID
+      tags:
+      - good
     put:
       consumes:
       - application/json
-      description: update order with given id
+      description: update good with given id
       parameters:
       - description: good id
         in: path
