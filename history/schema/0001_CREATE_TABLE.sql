@@ -35,6 +35,8 @@ CREATE TABLE goods (
     price DECIMAL(18,2) CHECK ( price > 0 ) NOT NULL,
     category VARCHAR(55),
     status_id INT,
+    created TIMESTAMPTZ NOT NULL DEFAULT now(),
+    modified TIMESTAMPTZ NOT NULL DEFAULT now(),
     FOREIGN KEY (status_id) REFERENCES status (status_id)
 );
 

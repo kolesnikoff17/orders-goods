@@ -8,7 +8,7 @@ import (
 	"history/internal/entity"
 )
 
-// Good implement good_uc.GoodRepo
+// Good implements good_uc.GoodRepo
 type Good struct {
 	db postgre.Db
 }
@@ -39,7 +39,7 @@ func (r *Good) Update(ctx context.Context, good entity.GoodInOrder) error {
 	}
 	defer tx.Rollback()
 	_, err = tx.ExecContext(ctx,
-		`UPDATE goods SET status_id = 2 WHERE good_id = $1 AND status_id = 1`, good.GoodID)
+		`UPDATE goods SET status_id = 2, modified = now() WHERE good_id = $1 AND status_id = 1`, good.GoodID)
 	if err != nil {
 		return fmt.Errorf("good_repo - update: %w", err)
 	}
@@ -54,7 +54,8 @@ VALUES (:good_id, :name, :price, :category, 1)`, good)
 
 // Archive mark good as archived
 func (r *Good) Archive(ctx context.Context, id string) error {
-	_, err := r.db.Pool.ExecContext(ctx, `UPDATE goods SET status_id = 2 WHERE good_id = $1 AND status_id = 1`, id)
+	_, err := r.db.Pool.ExecContext(ctx,
+		`UPDATE goods SET status_id = 2, modified = now() WHERE good_id = $1 AND status_id = 1`, id)
 	if err != nil {
 		return fmt.Errorf("good_repo - archive: %w", err)
 	}

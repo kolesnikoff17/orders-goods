@@ -16,9 +16,11 @@ type Order struct {
 
 // GoodInOrder -.
 type GoodInOrder struct {
-	GoodID   string `json:"-" bd:"good_id"`
-	Name     string `json:"name" bd:"name"`
-	Category string `json:"category" bd:"category"`
-	Price    string `json:"price" bd:"price"`
-	Amount   int    `json:"amount" bd:"amount"`
+	GoodID   string    `json:"-" bd:"good_id"`
+	Name     string    `json:"name" bd:"name"`
+	Category string    `json:"category" bd:"category"`
+	Price    string    `json:"price" bd:"price"`
+	Amount   int       `json:"amount" bd:"amount"`
+	Created  time.Time `json:"created" bd:"created"`
+	Modified time.Time `json:"modified" bd:"modified"`
 }

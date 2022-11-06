@@ -9,7 +9,7 @@ import (
 	"history/internal/entity"
 )
 
-// Order implement order_uc.OrderRepo
+// Order implements order_uc.OrderRepo
 type Order struct {
 	db postgre.Db
 }
@@ -55,7 +55,8 @@ func (r *Order) Update(ctx context.Context, order entity.Order) error {
 	}
 	defer tx.Rollback()
 	_, err = tx.ExecContext(ctx,
-		`UPDATE orders SET status_id = 2 WHERE order_id = $1 AND status_id = 1`, order.ID)
+		`UPDATE orders SET status_id = 2, modified = :modified 
+              WHERE order_id = :order_id AND status_id = 1`, order)
 	if err != nil {
 		return fmt.Errorf("order_repo - update: %w", err)
 	}
@@ -69,7 +70,8 @@ func (r *Order) Update(ctx context.Context, order entity.Order) error {
 // Archive delete order from active
 func (r *Order) Archive(ctx context.Context, id int) error {
 	_, err := r.db.Pool.ExecContext(ctx,
-		`UPDATE orders SET status_id = 3 WHERE order_id = $1 AND status_id = 1`, id)
+		`UPDATE orders SET status_id = 3, modified = now() 
+              WHERE order_id = $1 AND status_id = 1`, id)
 	if err != nil {
 		return fmt.Errorf("order_repo - archive: %w", err)
 	}
