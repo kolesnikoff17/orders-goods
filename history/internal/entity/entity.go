@@ -20,5 +20,5 @@ type GoodInOrder struct {
 	Name     string `json:"name" bd:"name"`
 	Category string `json:"category" bd:"category"`
 	Price    string `json:"price" bd:"price"`
-	Amount   string `json:"amount" bd:"amount"`
+	Amount   int    `json:"amount" bd:"amount"`
 }

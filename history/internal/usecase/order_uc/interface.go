@@ -14,6 +14,7 @@ type Order interface {
 
 // OrderRepo is a repo layer interface for CUD operations on orders
 type OrderRepo interface {
+	GetPrices(ctx context.Context, order entity.Order) (entity.Order, error)
 	Create(ctx context.Context, order entity.Order) error
 	Update(ctx context.Context, order entity.Order) error
 	Archive(ctx context.Context, id int) error
