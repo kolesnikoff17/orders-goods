@@ -27,8 +27,8 @@ func New(c *kafkaproducer.Conn) *Producer {
 
 // Message is a model-listener message adapter
 type Message struct {
-	Action ActionType
-	Data   Good
+	Action ActionType `json:"action"`
+	Data   Good       `json:"good"`
 }
 
 // Good is a kafka message
@@ -58,16 +58,8 @@ func (p *Producer) Notify(message Message) error {
 }
 
 func msgPrepare(m Message) *sarama.ProducerMessage {
-	var topic string
-	switch m.Action {
-	case Create:
-		topic = os.Getenv("KAFKA_CREATE_TOPIC")
-	case Update:
-		topic = os.Getenv("KAFKA_UPDATE_TOPIC")
-	case Delete:
-		topic = os.Getenv("KAFKA_DELETE_TOPIC")
-	}
-	msg, _ := json.Marshal(m.Data)
+	var topic = os.Getenv("KAFKA_GOOD_TOPIC")
+	msg, _ := json.Marshal(m)
 	return &sarama.ProducerMessage{
 		Topic:     topic,
 		Partition: -1,
