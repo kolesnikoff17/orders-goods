@@ -1,4 +1,4 @@
-package repository
+package historyrepo
 
 import (
 	"common.local/pkg/postgre"
@@ -9,11 +9,11 @@ import (
 
 // History implements history_uc.HistoryRepo
 type History struct {
-	db postgre.Db
+	db *postgre.Db
 }
 
 // New is a constructor for History
-func New(db postgre.Db) *History {
+func New(db *postgre.Db) *History {
 	return &History{
 		db: db,
 	}

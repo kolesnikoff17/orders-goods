@@ -1,4 +1,4 @@
-package repository
+package orderrepo
 
 import (
 	"common.local/pkg/postgre"
@@ -11,11 +11,11 @@ import (
 
 // Order implements order_uc.OrderRepo
 type Order struct {
-	db postgre.Db
+	db *postgre.Db
 }
 
 // New is a constructor for Order
-func New(db postgre.Db) *Order {
+func New(db *postgre.Db) *Order {
 	return &Order{
 		db: db,
 	}

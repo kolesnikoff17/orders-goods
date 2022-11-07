@@ -1,4 +1,4 @@
-package repository
+package goodrepo
 
 import (
 	"common.local/pkg/postgre"
@@ -10,11 +10,11 @@ import (
 
 // Good implements good_uc.GoodRepo
 type Good struct {
-	db postgre.Db
+	db *postgre.Db
 }
 
 // New is a constructor for Good
-func New(db postgre.Db) *Good {
+func New(db *postgre.Db) *Good {
 	return &Good{
 		db: db,
 	}
